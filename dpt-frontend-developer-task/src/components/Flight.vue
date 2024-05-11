@@ -1,4 +1,34 @@
-<script setup></script>
+<script setup>
+	import { ref } from 'vue';
+	import jsonData from '../data/data.json';
+
+	//data section
+	let flightOffer = ref([]);
+	flightOffer = jsonData.flightOffer?.map((flightOffer) => {
+		const updatedItineraries = flightOffer.itineraries?.map((itinerary) => {
+			const updatedSegments = itinerary.segments?.map((segment) => {
+				return {
+					...segment,
+					duration: itinerary.duration,
+					price: flightOffer.price,
+					fareBasis: flightOffer.fareBasis,
+					class: flightOffer.class,
+					seat: flightOffer.seat
+				};
+			});
+			return {
+				...itinerary,
+				segments: updatedSegments
+			};
+		});
+		return {
+			...flightOffer,
+			itineraries: updatedItineraries
+		};
+	});
+
+	console.log(flightOffer);
+</script>
 
 <template>
 	<section class="py-8">
@@ -16,50 +46,38 @@
 					<th class="w-[10%] text-end px-2 uppercase">Price</th>
 				</tr>
 			</thead>
-			<tbody class="flex-grow">
-				<tr class="py-4 border-b-2 border-red-700">
-					<td class="w-[20%] text-start px-2 text-gray-500 text-xs">
-						The Sliding Mr. Bones (Next Stop, Pottersville)
-					</td>
-					<td class="w-[12%] text-start px-2 text-gray-500 text-xs">Malcolm Lockyer</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[8%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-end px-2 text-gray-500 text-xs">
-						<div>
-							<p>12222</p>
-							<button
-								class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
-								Search
-							</button>
-						</div>
-					</td>
-				</tr>
-				<tr class="bg-gray-100 py-2">
-					<td class="w-[20%] text-start px-2 text-gray-500 text-xs">
-						The Sliding Mr. Bones (Next Stop, Pottersville)
-					</td>
-					<td class="w-[12%] text-start px-2 text-gray-500 text-xs">Malcolm Lockyer</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[8%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-					<td class="w-[10%] text-end px-2 text-gray-500 text-xs">
-						<div>
-							<p>12222</p>
-							<button
-								class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
-								Search
-							</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
+			<template v-for="(flight, flightIndex) in flightOffer" :key="flightIndex">
+				<tbody class="flex-grow">
+					<tr
+						class="py-4"
+						v-for="(flightItem, itemIndex) in flight.itineraries[0]?.segments"
+						:key="itemIndex"
+						:class="{
+							'border-b-2 border-red-700': itemIndex + 1 == flight.itineraries[0]?.segments?.length
+						}">
+						<td class="w-[20%] text-start px-2 text-gray-500 text-xs">
+							<p>{{ flightItem.aircraft || '' }}</p>
+						</td>
+						<td class="w-[12%] text-start px-2 text-gray-500 text-xs">Malcolm Lockyer</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[8%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[10%] text-end px-2 text-gray-500 text-xs">
+							<div>
+								<p>12222</p>
+								<button
+									v-if="itemIndex + 1 == flight.itineraries[0]?.segments?.length"
+									class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
+									Search
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</template>
 		</table>
 	</section>
 </template>
