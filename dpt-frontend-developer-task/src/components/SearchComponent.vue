@@ -102,5 +102,6 @@
 				Search
 			</button>
 		</div>
+		<span>Data parsed successfully</span>
 	</section>
 </template>
