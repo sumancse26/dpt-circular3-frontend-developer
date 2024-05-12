@@ -1,9 +1,7 @@
 <script setup>
-	import { ref } from 'vue';
 	import jsonData from '../data/data.json';
 
-	//data section
-	let flightOffer = ref([]);
+	//methods section
 	flightOffer = jsonData.flightOffer?.map((flightOffer) => {
 		const updatedItineraries = flightOffer.itineraries?.map((itinerary) => {
 			const updatedSegments = itinerary.segments?.map((segment) => {
@@ -27,11 +25,12 @@
 		};
 	});
 
-	console.log(flightOffer);
+	console.log('singleFlight.flightNo ', singleFlight.value);
 </script>
 
 <template>
 	<section class="py-8">
+		{{ singleFlight.flightNo }}
 		<table class="w-full border-collapse">
 			<thead class="flex-grow">
 				<tr class="bg-gray-200 h-10 text-gray-500 text-xs tracking-wider">
@@ -56,21 +55,32 @@
 							'border-b-2 border-red-700': itemIndex + 1 == flight.itineraries[0]?.segments?.length
 						}">
 						<td class="w-[20%] text-start px-2 text-gray-500 text-xs">
-							<p>{{ flightItem.aircraft || '' }}</p>
+							<p>{{ flightItem.flightNumber || '' }}</p>
 						</td>
-						<td class="w-[12%] text-start px-2 text-gray-500 text-xs">Malcolm Lockyer</td>
-						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-						<td class="w-[8%] text-center px-2 text-gray-500 text-xs">1961</td>
-						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
-						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">1961</td>
+						<td class="w-[12%] text-start px-2 text-gray-500 text-xs">{{ flightItem.aircraft || '' }}</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">
+							{{ flightItem.class[0][itemIndex] || '' }}
+						</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">
+							{{ flightItem.fareBasis[0][itemIndex] || '' }}
+						</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">
+							{{ flightItem.arrival?.iataCode || '' }} - {{ flightItem.departure?.iataCode || '' }}
+						</td>
+						<td class="w-[8%] text-center px-2 text-gray-500 text-xs">
+							{{ flightItem.departure?.at || '' }}
+						</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs">
+							{{ flightItem.arrival?.at || '' }}
+						</td>
+						<td class="w-[10%] text-center px-2 text-gray-500 text-xs" v-if="itemIndex == 0">
+							{{ flight.itineraries[0]?.duration || '' }}
+						</td>
 						<td class="w-[10%] text-end px-2 text-gray-500 text-xs">
-							<div>
-								<p>12222</p>
+							<div v-if="itemIndex == 0" class="flex flex-col gap-2">
+								<p>{{ flight.price || '' }}</p>
 								<button
-									v-if="itemIndex + 1 == flight.itineraries[0]?.segments?.length"
-									class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
+									class="bg-blue-800 px-3 py-1 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
 									Search
 								</button>
 							</div>
