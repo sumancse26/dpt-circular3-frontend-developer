@@ -1,6 +1,14 @@
 <script setup>
-	import { ref } from 'vue';
+	import { defineProps, reactive, ref } from 'vue';
+	defineProps({
+		getSearchObj: Function
+	});
 	const active = ref(true);
+	const searchObj = reactive({
+		LHR: null,
+		CDG: null,
+		date: null
+	});
 </script>
 
 <template>
@@ -27,14 +35,17 @@
 		<div class="flex justify-between items-center gap-4 border-t-2 border-b-2 py-4">
 			<div class="flex gap-4">
 				<input
+					v-model.trim="searchObj.LHR"
 					type="text"
 					placeholder="LHR"
 					class="outline outline-2 outline-[#abaeb4] outline-offset-2 rounded-sm px-2 focus:outline-blue-800" />
 				<input
+					v-model.trim="searchObj.CDG"
 					type="text"
 					placeholder="CDG"
 					class="outline outline-2 outline-[#abaeb4] outline-offset-2 rounded-sm px-2 focus:outline-blue-800" />
 				<input
+					v-model.trim="searchObj.date"
 					type="date"
 					class="outline outline-2 outline-[#abaeb4] outline-offset-2 rounded-sm px-2 focus:outline-blue-800" />
 			</div>
@@ -98,6 +109,7 @@
 				</div>
 			</form>
 			<button
+				@click="getSearchObj(searchObj)"
 				class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
 				Search
 			</button>

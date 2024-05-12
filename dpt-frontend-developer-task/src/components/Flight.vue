@@ -1,6 +1,14 @@
 <script setup>
+	import { defineProps, reactive, ref } from 'vue';
 	import jsonData from '../data/data.json';
 
+	const props = defineProps({
+		searchFlight: Object
+	});
+
+	let flightSearchKey = ref(props.searchFlight);
+	console.log('flight', flightSearchKey.value);
+	let flightOffer = reactive([]);
 	//methods section
 	flightOffer = jsonData.flightOffer?.map((flightOffer) => {
 		const updatedItineraries = flightOffer.itineraries?.map((itinerary) => {
@@ -25,12 +33,12 @@
 		};
 	});
 
-	console.log('singleFlight.flightNo ', singleFlight.value);
+	// console.log('singleFlight.flightNo ', singleFlight.value);
 </script>
 
 <template>
 	<section class="py-8">
-		{{ singleFlight.flightNo }}
+		{{ flightSearchKey?.LHR }}
 		<table class="w-full border-collapse">
 			<thead class="flex-grow">
 				<tr class="bg-gray-200 h-10 text-gray-500 text-xs tracking-wider">
