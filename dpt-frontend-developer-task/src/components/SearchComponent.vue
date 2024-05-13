@@ -1,14 +1,20 @@
 <script setup>
-	import { defineProps, reactive, ref } from 'vue';
-	defineProps({
+	import { reactive, ref } from 'vue';
+	const props = defineProps({
 		getSearchObj: Function
 	});
 	const active = ref(true);
 	const searchObj = reactive({
 		LHR: null,
 		CDG: null,
-		date: null
+		date: null,
+		searchActive: false
 	});
+
+	const searchBtnHandler = () => {
+		searchObj.searchActive = true;
+		props.getSearchObj(searchObj);
+	};
 </script>
 
 <template>
@@ -109,7 +115,7 @@
 				</div>
 			</form>
 			<button
-				@click="getSearchObj(searchObj)"
+				@click="searchBtnHandler"
 				class="bg-blue-800 px-3 py-0.5 rounded-sm text-white tracking-wider hover:bg-blue-500 transition-all">
 				Search
 			</button>

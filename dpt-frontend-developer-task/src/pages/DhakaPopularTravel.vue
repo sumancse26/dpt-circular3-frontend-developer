@@ -8,8 +8,6 @@
 	const getFlightSearch = async (data) => {
 		searchedData.value = await data;
 	};
-
-	console.log('searchedData', searchedData.value);
 </script>
 
 <template>

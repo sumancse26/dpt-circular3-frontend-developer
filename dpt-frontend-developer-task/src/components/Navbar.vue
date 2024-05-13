@@ -1,3 +1,36 @@
+<script setup>
+	import {
+		Disclosure,
+		DisclosureButton,
+		DisclosurePanel,
+		Menu,
+		MenuButton,
+		MenuItem,
+		MenuItems
+	} from '@headlessui/vue';
+	import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+	import { ref } from 'vue';
+
+	//navbar data
+	const navigation = ref([
+		{ name: 'Dashboard', href: '#', current: true },
+		{ name: 'Master Price', href: '#', current: false },
+		{ name: 'Custom Price', href: '#', current: false },
+		{ name: 'Calendar', href: '#', current: false },
+		{ name: 'Reports', href: '#', current: false }
+	]);
+
+	const selectedNavItem = ref({ name: 'Dashboard', href: '#', current: true });
+
+	//get selected item
+	const getSelectedItem = (item) => {
+		selectedNavItem.value = item;
+		navigation.value?.forEach((selected) => {
+			selected.current = selected.name?.toLowerCase() == item.name?.toLowerCase() ? true : false;
+		});
+	};
+</script>
+
 <template>
 	<Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
 		<div class="mx-auto max-w-7xl sm:px-1 lg:px-1">
@@ -112,35 +145,3 @@
 		{{ selectedNavItem.name }}
 	</p>
 </template>
-
-<script setup>
-	import {
-		Disclosure,
-		DisclosureButton,
-		DisclosurePanel,
-		Menu,
-		MenuButton,
-		MenuItem,
-		MenuItems
-	} from '@headlessui/vue';
-	import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
-	import { ref } from 'vue';
-
-	const navigation = ref([
-		{ name: 'Dashboard', href: '#', current: true },
-		{ name: 'Master Price', href: '#', current: false },
-		{ name: 'Custom Price', href: '#', current: false },
-		{ name: 'Calendar', href: '#', current: false },
-		{ name: 'Reports', href: '#', current: false }
-	]);
-
-	const selectedNavItem = ref({ name: 'Dashboard', href: '#', current: true });
-
-	//methods section
-	const getSelectedItem = (item) => {
-		selectedNavItem.value = item;
-		navigation.value?.forEach((selected) => {
-			selected.current = selected.name?.toLowerCase() == item.name?.toLowerCase() ? true : false;
-		});
-	};
-</script>

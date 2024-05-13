@@ -1,15 +1,14 @@
 <script setup>
-	import { defineProps, reactive, ref } from 'vue';
+	import { computed, reactive } from 'vue';
 	import jsonData from '../data/data.json';
 
 	const props = defineProps({
 		searchFlight: Object
 	});
 
-	let flightSearchKey = ref(props.searchFlight);
-	console.log('flight', flightSearchKey.value);
 	let flightOffer = reactive([]);
-	//methods section
+
+	//get data from json file
 	flightOffer = jsonData.flightOffer?.map((flightOffer) => {
 		const updatedItineraries = flightOffer.itineraries?.map((itinerary) => {
 			const updatedSegments = itinerary.segments?.map((segment) => {
@@ -33,12 +32,33 @@
 		};
 	});
 
-	// console.log('singleFlight.flightNo ', singleFlight.value);
+	//get the searched data
+	const flights = computed(() => {
+		if (props.searchFlight?.LHR || props.searchFlight?.CDG || props.searchFlight?.date) {
+			return flightOffer.filter((offer) =>
+				offer.itineraries.some((itinerary) =>
+					itinerary.segments.every((segment) =>
+						[
+							segment.departure?.iataCode?.toLowerCase(),
+							segment.arrival?.iataCode?.toLowerCase(),
+							segment.date
+						].some((value) =>
+							[
+								props.searchFlight.LHR?.toLowerCase(),
+								props.searchFlight.CDG?.toLowerCase(),
+								props.searchFlight.date
+							].includes(value)
+						)
+					)
+				)
+			);
+		}
+		return flightOffer;
+	});
 </script>
 
 <template>
 	<section class="py-8">
-		{{ flightSearchKey?.LHR }}
 		<table class="w-full border-collapse">
 			<thead class="flex-grow">
 				<tr class="bg-gray-200 h-10 text-gray-500 text-xs tracking-wider">
@@ -53,7 +73,7 @@
 					<th class="w-[10%] text-end px-2 uppercase">Price</th>
 				</tr>
 			</thead>
-			<template v-for="(flight, flightIndex) in flightOffer" :key="flightIndex">
+			<template v-for="(flight, flightIndex) in flights" :key="flightIndex">
 				<tbody class="flex-grow">
 					<tr
 						class="py-4"

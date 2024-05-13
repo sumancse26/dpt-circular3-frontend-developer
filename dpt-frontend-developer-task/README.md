@@ -1,7 +1,17 @@
-# Vue 3 + Vite
+# dpt-frontend-developer-task
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## clone the repository from github
 
-## Recommended IDE Setup
+## go to project folder and run npm install command from terminal
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+## run the project by running -- npm run dev or npx vite command
+
+### my live project link ----
+
+1. <https://redux-video-gellary.vercel.app/>
+2. <https://suman-sarkar-portfolio.vercel.app/>
+
+### github link ----
+
+1. <https://github.com/sumancse26/redux-video-gellary>
+2. <https://github.com/sumancse26/agencywebsite>
